@@ -4,13 +4,13 @@ object CategoryTable {
 
     const val TABLE = "categories"
 
-    const val COL_ID = "_id"
+    const val COL_ID = "cat_id"
 
-    const val COL_NAME = "name"
+    const val COL_NAME = "cat_name"
 
-    const val COL_ORDER = "sort"
+    const val COL_ORDER = "cat_order"
 
-    const val COL_FLAGS = "flags"
+    const val COL_FLAGS = "cat_flags"
 
     val createTableQuery: String
         get() = """CREATE TABLE $TABLE(

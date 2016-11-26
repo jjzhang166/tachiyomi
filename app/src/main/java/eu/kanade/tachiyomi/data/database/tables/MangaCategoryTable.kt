@@ -4,11 +4,11 @@ object MangaCategoryTable {
 
     const val TABLE = "mangas_categories"
 
-    const val COL_ID = "_id"
+    const val COL_ID = "mc_id"
 
-    const val COL_MANGA_ID = "manga_id"
+    const val COL_MANGA_ID = "mc_manga_id"
 
-    const val COL_CATEGORY_ID = "category_id"
+    const val COL_CATEGORY_ID = "mc_category_id"
 
     val createTableQuery: String
         get() = """CREATE TABLE $TABLE(

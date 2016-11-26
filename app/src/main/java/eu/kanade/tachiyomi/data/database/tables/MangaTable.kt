@@ -4,38 +4,40 @@ object MangaTable {
 
     const val TABLE = "mangas"
 
-    const val COL_ID = "_id"
+    const val COL_ID = "m_id"
 
-    const val COL_SOURCE = "source"
+    const val COL_SOURCE = "m_source"
 
-    const val COL_URL = "url"
+    const val COL_URL = "m_url"
 
-    const val COL_ARTIST = "artist"
+    const val COL_ARTIST = "m_artist"
 
-    const val COL_AUTHOR = "author"
+    const val COL_AUTHOR = "m_author"
 
-    const val COL_DESCRIPTION = "description"
+    const val COL_DESCRIPTION = "m_description"
 
-    const val COL_GENRE = "genre"
+    const val COL_GENRE = "m_genre"
 
-    const val COL_TITLE = "title"
+    const val COL_TITLE = "m_title"
 
-    const val COL_STATUS = "status"
+    const val COL_STATUS = "m_status"
 
-    const val COL_THUMBNAIL_URL = "thumbnail_url"
+    const val COL_THUMBNAIL_URL = "m_thumbnail_url"
 
-    const val COL_FAVORITE = "favorite"
+    const val COL_FAVORITE = "m_favorite"
 
-    const val COL_LAST_UPDATE = "last_update"
+    const val COL_LAST_UPDATE = "m_last_update"
 
-    const val COL_INITIALIZED = "initialized"
+    const val COL_INITIALIZED = "m_initialized"
 
-    const val COL_VIEWER = "viewer"
+    const val COL_VIEWER = "m_viewer"
 
-    const val COL_CHAPTER_FLAGS = "chapter_flags"
+    const val COL_CHAPTER_FLAGS = "m_chapter_flags"
 
+    // TODO remove: not a db field
     const val COL_UNREAD = "unread"
 
+    // TODO remove: not a db field
     const val COL_CATEGORY = "category"
 
     val createTableQuery: String

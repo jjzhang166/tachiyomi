@@ -12,7 +12,7 @@ import com.pushtorefresh.storio.sqlite.queries.UpdateQuery
 import eu.kanade.tachiyomi.data.database.models.Chapter
 import eu.kanade.tachiyomi.data.database.models.ChapterImpl
 import eu.kanade.tachiyomi.data.database.tables.ChapterTable.COL_BOOKMARK
-import eu.kanade.tachiyomi.data.database.tables.ChapterTable.COL_CHAPTER_NUMBER
+import eu.kanade.tachiyomi.data.database.tables.ChapterTable.COL_NUMBER
 import eu.kanade.tachiyomi.data.database.tables.ChapterTable.COL_DATE_FETCH
 import eu.kanade.tachiyomi.data.database.tables.ChapterTable.COL_DATE_UPLOAD
 import eu.kanade.tachiyomi.data.database.tables.ChapterTable.COL_ID
@@ -52,7 +52,7 @@ class ChapterPutResolver : DefaultPutResolver<Chapter>() {
         put(COL_DATE_FETCH, obj.date_fetch)
         put(COL_DATE_UPLOAD, obj.date_upload)
         put(COL_LAST_PAGE_READ, obj.last_page_read)
-        put(COL_CHAPTER_NUMBER, obj.chapter_number)
+        put(COL_NUMBER, obj.chapter_number)
         put(COL_SOURCE_ORDER, obj.source_order)
     }
 }
@@ -69,7 +69,7 @@ class ChapterGetResolver : DefaultGetResolver<Chapter>() {
         date_fetch = cursor.getLong(cursor.getColumnIndex(COL_DATE_FETCH))
         date_upload = cursor.getLong(cursor.getColumnIndex(COL_DATE_UPLOAD))
         last_page_read = cursor.getInt(cursor.getColumnIndex(COL_LAST_PAGE_READ))
-        chapter_number = cursor.getFloat(cursor.getColumnIndex(COL_CHAPTER_NUMBER))
+        chapter_number = cursor.getFloat(cursor.getColumnIndex(COL_NUMBER))
         source_order = cursor.getInt(cursor.getColumnIndex(COL_SOURCE_ORDER))
     }
 }
