@@ -94,7 +94,7 @@ class Anilist(private val context: Context, id: Int) : MangaSyncService(context,
     override fun bind(manga: MangaSync): Observable<MangaSync> {
         return getList()
                 .flatMap { userlist ->
-                    manga.sync_id = id
+                    manga.service_id = id
                     val mangaFromList = userlist.find { it.remote_id == manga.remote_id }
                     if (mangaFromList != null) {
                         manga.copyPersonalFrom(mangaFromList)

@@ -45,7 +45,7 @@ class UpdateMangaSyncService : Service() {
     }
 
     private fun updateLastChapterRead(mangaSync: MangaSync, startId: Int) {
-        val sync = syncManager.getService(mangaSync.sync_id)
+        val sync = syncManager.getService(mangaSync.service_id)
         if (sync == null) {
             stopSelf(startId)
             return

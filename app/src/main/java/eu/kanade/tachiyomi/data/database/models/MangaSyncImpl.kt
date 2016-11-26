@@ -6,7 +6,7 @@ class MangaSyncImpl : MangaSync {
 
     override var manga_id: Long = 0
 
-    override var sync_id: Int = 0
+    override var service_id: Int = 0
 
     override var remote_id: Int = 0
 
@@ -29,13 +29,13 @@ class MangaSyncImpl : MangaSync {
         val mangaSync = other as MangaSync
 
         if (manga_id != mangaSync.manga_id) return false
-        if (sync_id != mangaSync.sync_id) return false
+        if (service_id != mangaSync.service_id) return false
         return remote_id == mangaSync.remote_id
     }
 
     override fun hashCode(): Int {
         var result = (manga_id xor manga_id.ushr(32)).toInt()
-        result = 31 * result + sync_id
+        result = 31 * result + service_id
         result = 31 * result + remote_id
         return result
     }

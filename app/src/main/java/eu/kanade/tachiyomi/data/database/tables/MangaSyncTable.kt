@@ -8,7 +8,7 @@ object MangaSyncTable {
 
     const val COL_MANGA_ID = "tr_manga_id"
 
-    const val COL_SYNC_ID = "tr_sync_id"
+    const val COL_SERVICE_ID = "tr_service_id"
 
     const val COL_REMOTE_ID = "tr_remote_id"
 
@@ -26,14 +26,14 @@ object MangaSyncTable {
         get() = """CREATE TABLE $TABLE(
             $COL_ID INTEGER NOT NULL PRIMARY KEY,
             $COL_MANGA_ID INTEGER NOT NULL,
-            $COL_SYNC_ID INTEGER NOT NULL,
+            $COL_SERVICE_ID INTEGER NOT NULL,
             $COL_REMOTE_ID INTEGER NOT NULL,
             $COL_TITLE TEXT NOT NULL,
             $COL_LAST_CHAPTER_READ INTEGER NOT NULL,
             $COL_TOTAL_CHAPTERS INTEGER NOT NULL,
             $COL_STATUS INTEGER NOT NULL,
             $COL_SCORE FLOAT NOT NULL,
-            UNIQUE ($COL_MANGA_ID, $COL_SYNC_ID) ON CONFLICT REPLACE,
+            UNIQUE ($COL_MANGA_ID, $COL_SERVICE_ID) ON CONFLICT REPLACE,
             FOREIGN KEY($COL_MANGA_ID) REFERENCES ${MangaTable.TABLE} (${MangaTable.COL_ID})
             ON DELETE CASCADE
             )"""

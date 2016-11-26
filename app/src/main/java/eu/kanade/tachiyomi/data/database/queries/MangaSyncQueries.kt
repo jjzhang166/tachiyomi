@@ -15,7 +15,7 @@ interface MangaSyncQueries : DbProvider {
             .withQuery(Query.builder()
                     .table(MangaSyncTable.TABLE)
                     .where("${MangaSyncTable.COL_MANGA_ID} = ? AND " +
-                            "${MangaSyncTable.COL_SYNC_ID} = ?")
+                            "${MangaSyncTable.COL_SERVICE_ID} = ?")
                     .whereArgs(manga.id, sync.id)
                     .build())
             .prepare()

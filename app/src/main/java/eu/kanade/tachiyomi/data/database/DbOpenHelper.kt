@@ -85,7 +85,7 @@ class DbOpenHelper(context: Context)
                         "_id", "manga_id", "sync_id", "remote_id", "title",
                         "last_chapter_read", "status", "score", "total_chapters")
                 val new = listOf(
-                        COL_ID, COL_MANGA_ID, COL_SYNC_ID, COL_REMOTE_ID, COL_TITLE,
+                        COL_ID, COL_MANGA_ID, COL_SERVICE_ID, COL_REMOTE_ID, COL_TITLE,
                         COL_LAST_CHAPTER_READ, COL_STATUS, COL_SCORE, COL_TOTAL_CHAPTERS)
 
                 prefixMigration(db, TABLE, createTableQuery, old, new)

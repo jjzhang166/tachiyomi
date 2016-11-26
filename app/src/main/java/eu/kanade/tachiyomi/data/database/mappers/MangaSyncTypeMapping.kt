@@ -17,7 +17,7 @@ import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_MANGA_ID
 import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_REMOTE_ID
 import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_SCORE
 import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_STATUS
-import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_SYNC_ID
+import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_SERVICE_ID
 import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_TITLE
 import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.COL_TOTAL_CHAPTERS
 import eu.kanade.tachiyomi.data.database.tables.MangaSyncTable.TABLE
@@ -43,7 +43,7 @@ class MangaSyncPutResolver : DefaultPutResolver<MangaSync>() {
     override fun mapToContentValues(obj: MangaSync) = ContentValues(9).apply {
         put(COL_ID, obj.id)
         put(COL_MANGA_ID, obj.manga_id)
-        put(COL_SYNC_ID, obj.sync_id)
+        put(COL_SERVICE_ID, obj.service_id)
         put(COL_REMOTE_ID, obj.remote_id)
         put(COL_TITLE, obj.title)
         put(COL_LAST_CHAPTER_READ, obj.last_chapter_read)
@@ -58,7 +58,7 @@ class MangaSyncGetResolver : DefaultGetResolver<MangaSync>() {
     override fun mapFromCursor(cursor: Cursor): MangaSync = MangaSyncImpl().apply {
         id = cursor.getLong(cursor.getColumnIndex(COL_ID))
         manga_id = cursor.getLong(cursor.getColumnIndex(COL_MANGA_ID))
-        sync_id = cursor.getInt(cursor.getColumnIndex(COL_SYNC_ID))
+        service_id = cursor.getInt(cursor.getColumnIndex(COL_SERVICE_ID))
         remote_id = cursor.getInt(cursor.getColumnIndex(COL_REMOTE_ID))
         title = cursor.getString(cursor.getColumnIndex(COL_TITLE))
         last_chapter_read = cursor.getInt(cursor.getColumnIndex(COL_LAST_CHAPTER_READ))

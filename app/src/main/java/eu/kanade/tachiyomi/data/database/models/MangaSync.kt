@@ -8,7 +8,7 @@ interface MangaSync : Serializable {
 
     var manga_id: Long
 
-    var sync_id: Int
+    var service_id: Int
 
     var remote_id: Int
 
@@ -33,7 +33,7 @@ interface MangaSync : Serializable {
     companion object {
 
         fun create(serviceId: Int): MangaSync = MangaSyncImpl().apply {
-            sync_id = serviceId
+            service_id = serviceId
         }
     }
 
