@@ -104,6 +104,14 @@ class DbOpenHelper(context: Context)
 
                 prefixMigration(db, TABLE, createTableQuery, old, new)
             }
+
+            with(HistoryTable) {
+                val old = listOf(
+                        "history_id", "history_chapter_id", "history_last_read", "history_time_read")
+                val new = listOf(COL_ID, COL_CHAPTER_ID, COL_LAST_READ, COL_TIME_READ)
+
+                prefixMigration(db, TABLE, createTableQuery, old, new)
+            }
         }
     }
 
