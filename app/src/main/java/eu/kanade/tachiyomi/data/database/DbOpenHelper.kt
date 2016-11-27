@@ -52,7 +52,7 @@ class DbOpenHelper(context: Context)
             db.execSQL(ChapterTable.bookmarkUpdateQuery)
         }
         if (oldVersion < 5) {
-            // Full db migration
+            // Full db migration to add prefixes.
 
             with(MangaTable) {
                 val old = listOf(
@@ -112,6 +112,13 @@ class DbOpenHelper(context: Context)
 
                 prefixMigration(db, TABLE, createTableQuery, old, new)
             }
+
+            // We made categories unique by name, so we have to delete orphans.
+            db.execSQL("""DELETE FROM ${MangaCategoryTable.TABLE}
+                WHERE ${MangaCategoryTable.COL_CATEGORY_ID} NOT IN
+                (SELECT ${CategoryTable.COL_ID} FROM ${CategoryTable.TABLE})""")
+
+            // TODO indexes have to be created again
         }
     }
 
