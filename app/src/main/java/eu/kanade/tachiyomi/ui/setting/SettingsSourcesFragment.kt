@@ -10,7 +10,6 @@ import eu.kanade.tachiyomi.data.preference.getOrDefault
 import eu.kanade.tachiyomi.source.SourceManager
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.widget.preference.LoginCheckBoxPreference
-import eu.kanade.tachiyomi.widget.preference.SourceLoginDialog
 import eu.kanade.tachiyomi.widget.preference.SwitchPreferenceCategory
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
@@ -111,9 +110,9 @@ class SettingsSourcesFragment : SettingsFragment() {
                 }
 
                 setOnLoginClickListener {
-                    val fragment = SourceLoginDialog.newInstance(source)
-                    fragment.setTargetFragment(this@SettingsSourcesFragment, SOURCE_CHANGE_REQUEST)
-                    fragment.show(fragmentManager, null)
+//                    val fragment = SourceLoginDialog.newInstance(source)
+//                    fragment.setTargetFragment(this@SettingsSourcesFragment, SOURCE_CHANGE_REQUEST)
+//                    fragment.show(fragmentManager, null)
                 }
 
             }

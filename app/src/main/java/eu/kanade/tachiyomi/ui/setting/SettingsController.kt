@@ -22,6 +22,12 @@ class SettingsController : BaseSettingsController() {
             onClick { navigateTo(SettingsReaderController()) }
         }
         preference {
+            iconRes = R.drawable.ic_file_download_black_24dp
+            iconTintAttr = R.attr.colorAccent
+            titleRes = R.string.pref_category_downloads
+            onClick { navigateTo(SettingsDownloadController()) }
+        }
+        preference {
             iconRes = R.drawable.ic_language_black_24dp
             iconTintAttr = R.attr.colorAccent
             titleRes = R.string.pref_category_sources

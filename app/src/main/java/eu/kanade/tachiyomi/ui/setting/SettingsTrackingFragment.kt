@@ -13,7 +13,6 @@ import eu.kanade.tachiyomi.data.track.TrackService
 import eu.kanade.tachiyomi.data.track.anilist.AnilistApi
 import eu.kanade.tachiyomi.util.getResourceColor
 import eu.kanade.tachiyomi.widget.preference.LoginPreference
-import eu.kanade.tachiyomi.widget.preference.TrackLoginDialog
 import uy.kohesive.injekt.injectLazy
 
 class SettingsTrackingFragment : SettingsFragment() {
@@ -69,9 +68,9 @@ class SettingsTrackingFragment : SettingsFragment() {
 
     private val defaultOnPreferenceClick: (TrackService) -> Unit
         get() = {
-            val fragment = TrackLoginDialog.newInstance(it)
-            fragment.setTargetFragment(this, SYNC_CHANGE_REQUEST)
-            fragment.show(fragmentManager, null)
+//            val fragment = TrackLoginDialog.newInstance(it)
+//            fragment.setTargetFragment(this, SYNC_CHANGE_REQUEST)
+//            fragment.show(fragmentManager, null)
         }
 
     override fun onResume() {

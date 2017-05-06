@@ -1,18 +1,20 @@
 package eu.kanade.tachiyomi.ui.setting
 
+import android.app.Activity
 import android.content.Intent
 import android.support.customtabs.CustomTabsIntent
 import android.support.v7.preference.PreferenceScreen
-import android.view.View
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.track.TrackManager
 import eu.kanade.tachiyomi.data.track.TrackService
 import eu.kanade.tachiyomi.data.track.anilist.AnilistApi
 import eu.kanade.tachiyomi.util.getResourceColor
 import eu.kanade.tachiyomi.widget.preference.LoginPreference
+import eu.kanade.tachiyomi.widget.preference.TrackLoginDialog
 import uy.kohesive.injekt.injectLazy
 
-class SettingsTrackingController : BaseSettingsController() {
+class SettingsTrackingController : BaseSettingsController(),
+        TrackLoginDialog.Listener {
 
     private val trackManager: TrackManager by injectLazy()
 
@@ -36,10 +38,9 @@ class SettingsTrackingController : BaseSettingsController() {
 
             trackPreference(trackManager.myAnimeList) {
                 onClick {
-                    // TODO
-//                    val fragment = TrackLoginDialog.newInstance(it)
-//                    fragment.setTargetFragment(this, SettingsTrackingFragment.SYNC_CHANGE_REQUEST)
-//                    fragment.show(fragmentManager, null)
+                    val dialog = TrackLoginDialog(trackManager.myAnimeList)
+                    dialog.targetController = this@SettingsTrackingController
+                    dialog.showDialog(router)
                 }
             }
             trackPreference(trackManager.aniList) {
@@ -53,7 +54,9 @@ class SettingsTrackingController : BaseSettingsController() {
             }
             trackPreference(trackManager.kitsu) {
                 onClick {
-                    // TODO
+                    val dialog = TrackLoginDialog(trackManager.kitsu)
+                    dialog.targetController = this@SettingsTrackingController
+                    dialog.showDialog(router)
                 }
             }
         }
@@ -69,8 +72,8 @@ class SettingsTrackingController : BaseSettingsController() {
         }, block)
     }
 
-    override fun onAttach(view: View) {
-        super.onAttach(view)
+    override fun onActivityResumed(activity: Activity) {
+        super.onActivityResumed(activity)
         // Manually refresh anilist holder
         updatePreference(trackManager.aniList.id)
     }
@@ -78,6 +81,10 @@ class SettingsTrackingController : BaseSettingsController() {
     private fun updatePreference(id: Int) {
         val pref = findPreference(keys.trackUsername(id)) as? LoginPreference
         pref?.notifyChanged()
+    }
+
+    override fun trackDialogClosed(service: TrackService) {
+        updatePreference(service.id)
     }
 
 }

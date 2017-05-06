@@ -1,6 +1,5 @@
 package eu.kanade.tachiyomi.ui.setting
 
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.support.v7.preference.PreferenceGroup
 import android.support.v7.preference.PreferenceScreen
@@ -8,13 +7,16 @@ import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.preference.getOrDefault
 import eu.kanade.tachiyomi.source.SourceManager
 import eu.kanade.tachiyomi.source.online.HttpSource
+import eu.kanade.tachiyomi.source.online.LoginSource
 import eu.kanade.tachiyomi.widget.preference.LoginCheckBoxPreference
+import eu.kanade.tachiyomi.widget.preference.SourceLoginDialog
 import eu.kanade.tachiyomi.widget.preference.SwitchPreferenceCategory
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import java.util.*
 
-class SettingsSourcesController : BaseSettingsController() {
+class SettingsSourcesController : BaseSettingsController(),
+        SourceLoginDialog.Listener {
 
     private val onlineSources by lazy { Injekt.get<SourceManager>().getOnlineSources() }
 
@@ -93,24 +95,19 @@ class SettingsSourcesController : BaseSettingsController() {
                 }
 
                 setOnLoginClickListener {
-                    // TODO
-//                    val fragment = SourceLoginDialog.newInstance(source)
-//                    fragment.setTargetFragment(this@SettingsSourcesFragment, SettingsSourcesFragment.SOURCE_CHANGE_REQUEST)
-//                    fragment.show(fragmentManager, null)
+                    val dialog = SourceLoginDialog(source)
+                    dialog.targetController = this@SettingsSourcesController
+                    dialog.showDialog(router)
                 }
-
             }
 
             group.addPreference(sourcePreference)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == SettingsSourcesFragment.SOURCE_CHANGE_REQUEST && data != null) {
-            val sourceId = data.getLongExtra("key", -1L)
-            val pref = findPreference(getSourceKey(sourceId)) as? LoginCheckBoxPreference
-            pref?.notifyChanged()
-        }
+    override fun loginDialogClosed(source: LoginSource) {
+        val pref = findPreference(getSourceKey(source.id)) as? LoginCheckBoxPreference
+        pref?.notifyChanged()
     }
 
     private fun getSourceKey(sourceId: Long): String {
