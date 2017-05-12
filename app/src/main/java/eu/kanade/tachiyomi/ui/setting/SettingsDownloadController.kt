@@ -13,6 +13,7 @@ import com.nononsenseapps.filepicker.FilePickerActivity
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.database.DatabaseHelper
 import eu.kanade.tachiyomi.data.preference.getOrDefault
+import eu.kanade.tachiyomi.util.DiskUtil
 import eu.kanade.tachiyomi.widget.CustomLayoutPickerActivity
 import uy.kohesive.injekt.injectLazy
 import java.io.File
@@ -38,7 +39,11 @@ class SettingsDownloadController : BaseSettingsController() {
 
                         // Don't display downloaded chapters in gallery apps creating .nomedia
                         if (dir != null && dir.exists()) {
-                            dir.createFile(".nomedia")
+                            val nomedia = dir.findFile(".nomedia")
+                            if (nomedia == null) {
+                                dir.createFile(".nomedia")
+                                applicationContext?.let { DiskUtil.scanMedia(it, dir.uri) }
+                            }
                         }
                     }
         }

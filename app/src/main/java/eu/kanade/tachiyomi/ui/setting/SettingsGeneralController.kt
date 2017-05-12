@@ -1,11 +1,22 @@
 package eu.kanade.tachiyomi.ui.setting
 
+import android.app.Dialog
+import android.os.Bundle
 import android.os.Handler
 import android.support.v7.preference.PreferenceScreen
+import android.view.View
+import com.afollestad.materialdialogs.MaterialDialog
+import com.bluelinelabs.conductor.ControllerChangeHandler
+import com.bluelinelabs.conductor.ControllerChangeType
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.database.DatabaseHelper
 import eu.kanade.tachiyomi.data.library.LibraryUpdateJob
+import eu.kanade.tachiyomi.data.preference.PreferencesHelper
+import eu.kanade.tachiyomi.data.preference.getOrDefault
+import eu.kanade.tachiyomi.ui.base.controller.DialogController
 import eu.kanade.tachiyomi.util.LocaleHelper
+import kotlinx.android.synthetic.main.pref_library_columns.view.*
+import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
@@ -49,6 +60,30 @@ class SettingsGeneralController : BaseSettingsController() {
                 activity?.recreate()
                 true
             }
+        }
+        preference {
+            titleRes = R.string.pref_library_columns
+            onClick {
+                LibraryColumnsDialog().showDialog(router)
+            }
+
+            fun getColumnValue(value: Int): String {
+                return if (value == 0)
+                    context.getString(R.string.default_columns)
+                else
+                    value.toString()
+            }
+
+            Observable.combineLatest(
+                    preferences.portraitColumns().asObservable(),
+                    preferences.landscapeColumns().asObservable(),
+                    { portraitCols, landscapeCols -> Pair(portraitCols, landscapeCols) })
+                    .subscribeUntilDestroy { (portraitCols, landscapeCols) ->
+                        val portrait = getColumnValue(portraitCols)
+                        val landscape = getColumnValue(landscapeCols)
+                        summary = "${context.getString(R.string.portrait)}: $portrait, " +
+                                "${context.getString(R.string.landscape)}: $landscape"
+                    }
         }
         intListPreference {
             key = keys.startScreen
@@ -140,6 +175,52 @@ class SettingsGeneralController : BaseSettingsController() {
                 true
             }
         }
+    }
+
+    class LibraryColumnsDialog : DialogController() {
+
+        private val preferences: PreferencesHelper = Injekt.get()
+
+        private var portrait = preferences.portraitColumns().getOrDefault()
+        private var landscape = preferences.landscapeColumns().getOrDefault()
+
+        override fun onCreateDialog(savedViewState: Bundle?): Dialog {
+            val dialog = MaterialDialog.Builder(activity!!)
+                    .title(R.string.pref_library_columns)
+                    .customView(R.layout.pref_library_columns, false)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        preferences.portraitColumns().set(portrait)
+                        preferences.landscapeColumns().set(landscape)
+                    }
+                    .build()
+
+            onViewCreated(dialog.view)
+            return dialog
+        }
+
+        fun onViewCreated(view: View) {
+            with(view.portrait_columns) {
+                displayedValues = arrayOf(context.getString(R.string.default_columns)) +
+                        IntRange(1, 10).map(Int::toString)
+                value = portrait
+
+                setOnValueChangedListener { _, _, newValue ->
+                    portrait = newValue
+                }
+            }
+            with(view.landscape_columns) {
+                displayedValues = arrayOf(context.getString(R.string.default_columns)) +
+                        IntRange(1, 10).map(Int::toString)
+                value = landscape
+
+                setOnValueChangedListener { _, _, newValue ->
+                    landscape = newValue
+                }
+            }
+        }
+
     }
 
 }

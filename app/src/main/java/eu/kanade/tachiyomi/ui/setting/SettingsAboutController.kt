@@ -1,5 +1,7 @@
 package eu.kanade.tachiyomi.ui.setting
 
+import android.app.Dialog
+import android.os.Bundle
 import android.support.v7.preference.PreferenceScreen
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
@@ -9,6 +11,7 @@ import eu.kanade.tachiyomi.data.updater.GithubUpdateChecker
 import eu.kanade.tachiyomi.data.updater.GithubUpdateResult
 import eu.kanade.tachiyomi.data.updater.UpdateCheckerJob
 import eu.kanade.tachiyomi.data.updater.UpdateDownloaderService
+import eu.kanade.tachiyomi.ui.base.controller.DialogController
 import eu.kanade.tachiyomi.util.toast
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -97,34 +100,51 @@ class SettingsAboutController : BaseSettingsController() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    val activity = activity ?: return@subscribe
                     when (result) {
                         is GithubUpdateResult.NewUpdate -> {
                             val body = result.release.changeLog
                             val url = result.release.downloadLink
 
                             // Create confirmation window
-                            MaterialDialog.Builder(activity)
-                                    .title(R.string.update_check_title)
-                                    .content(body)
-                                    .positiveText(R.string.update_check_confirm)
-                                    .negativeText(R.string.update_check_ignore)
-                                    .onPositive { _, _ ->
-                                        val appContext = applicationContext
-                                        if (appContext != null) {
-                                            // Start download
-                                            UpdateDownloaderService.downloadUpdate(appContext, url)
-                                        }
-                                    }
-                                    .show()
+                            NewUpdateDialogController(body, url).showDialog(router)
                         }
                         is GithubUpdateResult.NoNewUpdate -> {
-                            activity.toast(R.string.update_check_no_new_updates)
+                            activity?.toast(R.string.update_check_no_new_updates)
                         }
                     }
                 }, { error ->
                     Timber.e(error)
                 })
+    }
+
+    class NewUpdateDialogController(bundle: Bundle? = null) : DialogController(bundle) {
+
+        constructor(body: String, url: String) : this(Bundle().apply {
+            putString(BODY_KEY, body)
+            putString(URL_KEY, url)
+        })
+
+        override fun onCreateDialog(savedViewState: Bundle?): Dialog {
+            return MaterialDialog.Builder(activity!!)
+                    .title(R.string.update_check_title)
+                    .content(args.getString(BODY_KEY))
+                    .positiveText(R.string.update_check_confirm)
+                    .negativeText(R.string.update_check_ignore)
+                    .onPositive { _, _ ->
+                        val appContext = applicationContext
+                        if (appContext != null) {
+                            // Start download
+                            val url = args.getString(URL_KEY)
+                            UpdateDownloaderService.downloadUpdate(appContext, url)
+                        }
+                    }
+                    .build()
+        }
+
+        private companion object {
+            const val BODY_KEY = "NewUpdateDialogController.body"
+            const val URL_KEY = "NewUpdateDialogController.key"
+        }
     }
 
     private fun getFormattedBuildTime(): String {

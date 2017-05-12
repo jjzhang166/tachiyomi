@@ -1,19 +1,24 @@
 package eu.kanade.tachiyomi.ui.setting
 
+import android.app.Dialog
+import android.os.Bundle
 import android.support.v7.preference.PreferenceScreen
+import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.cache.ChapterCache
 import eu.kanade.tachiyomi.data.database.DatabaseHelper
 import eu.kanade.tachiyomi.data.library.LibraryUpdateService
 import eu.kanade.tachiyomi.network.NetworkHelper
-import eu.kanade.tachiyomi.util.plusAssign
+import eu.kanade.tachiyomi.ui.base.controller.DialogController
+import eu.kanade.tachiyomi.ui.library.LibraryController
 import eu.kanade.tachiyomi.util.toast
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import uy.kohesive.injekt.injectLazy
-import java.util.concurrent.atomic.AtomicInteger
 
 class SettingsAdvancedController : BaseSettingsController() {
 
@@ -27,6 +32,7 @@ class SettingsAdvancedController : BaseSettingsController() {
         titleRes = R.string.pref_category_advanced
 
         preference {
+            key = CLEAR_CACHE_KEY
             titleRes = R.string.pref_clear_chapter_cache
             summary = context.getString(R.string.used_cache, chapterCache.readableSize)
 
@@ -44,7 +50,11 @@ class SettingsAdvancedController : BaseSettingsController() {
             titleRes = R.string.pref_clear_database
             summaryRes = R.string.pref_clear_database_summary
 
-            onClick { clearDatabase() }
+            onClick {
+                val ctrl = ClearDatabaseDialogController()
+                ctrl.targetController = this@SettingsAdvancedController
+                ctrl.showDialog(router)
+            }
         }
         preference {
             titleRes = R.string.pref_refresh_library_metadata
@@ -55,52 +65,95 @@ class SettingsAdvancedController : BaseSettingsController() {
     }
 
     private fun clearChapterCache() {
-        val activity = activity ?: return
-
-        val deletedFiles = AtomicInteger()
-
+        if (activity == null) return
         val files = chapterCache.cacheDir.listFiles() ?: return
 
-        val dialog = MaterialDialog.Builder(activity)
-                .title(R.string.deleting)
-                .progress(false, files.size, true)
-                .cancelable(false)
-                .show()
+        var deletedFiles = 0
 
-        untilDestroySubscriptions += Observable.defer { Observable.from(files) }
-                .concatMap { file ->
+        val ctrl = DeletingFilesDialogController()
+        ctrl.total = files.size
+        ctrl.showDialog(router)
+
+        Observable.defer { Observable.from(files) }
+                .doOnNext { file ->
                     if (chapterCache.removeFileFromCache(file.name)) {
-                        deletedFiles.incrementAndGet()
+                        deletedFiles++
                     }
-                    Observable.just(file)
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    dialog.incrementProgress(1)
+                    ctrl.setProgress(deletedFiles)
                 }, {
-                    dialog.dismiss()
-                    activity.toast(R.string.cache_delete_error)
+                    activity?.toast(R.string.cache_delete_error)
                 }, {
-                    dialog.dismiss()
-                    activity.toast(resources?.getString(R.string.cache_deleted, deletedFiles.get()))
-//                    clearCache.summary = getString(R.string.used_cache, chapterCache.readableSize)
+                    ctrl.finish()
+                    activity?.toast(resources?.getString(R.string.cache_deleted, deletedFiles))
+                    findPreference(CLEAR_CACHE_KEY)?.summary =
+                            resources?.getString(R.string.used_cache, chapterCache.readableSize)
                 })
     }
 
-    private fun clearDatabase() {
-        val activity = activity ?: return
+    class DeletingFilesDialogController : DialogController() {
 
-        MaterialDialog.Builder(activity)
-                .content(R.string.clear_database_confirmation)
-                .positiveText(android.R.string.yes)
-                .negativeText(android.R.string.no)
-                .onPositive { _, _ ->
-                    (activity as SettingsActivity).parentFlags = SettingsActivity.FLAG_DATABASE_CLEARED
-                    db.deleteMangasNotInLibrary().executeAsBlocking()
-                    db.deleteHistoryNoLastRead().executeAsBlocking()
-                    activity.toast(R.string.clear_database_completed)
-                }
-                .show()
+        var total = 0
+
+        private var materialDialog: MaterialDialog? = null
+
+        override fun onCreateDialog(savedViewState: Bundle?): Dialog {
+            return MaterialDialog.Builder(activity!!)
+                    .title(R.string.deleting)
+                    .progress(false, total, true)
+                    .cancelable(false)
+                    .build()
+                    .also { materialDialog = it }
+        }
+
+        override fun onDestroyView(view: View) {
+            super.onDestroyView(view)
+            materialDialog = null
+        }
+
+        override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+            super.onRestoreInstanceState(savedInstanceState)
+            finish()
+        }
+
+        fun setProgress(deletedFiles: Int) {
+            materialDialog?.setProgress(deletedFiles)
+        }
+
+        fun finish() {
+            router.popController(this)
+        }
+    }
+
+    class ClearDatabaseDialogController : DialogController() {
+        override fun onCreateDialog(savedViewState: Bundle?): Dialog {
+            return MaterialDialog.Builder(activity!!)
+                    .content(R.string.clear_database_confirmation)
+                    .positiveText(android.R.string.yes)
+                    .negativeText(android.R.string.no)
+                    .onPositive { _, _ ->
+                        (targetController as? SettingsAdvancedController)?.clearDatabase()
+                    }
+                    .build()
+        }
+    }
+
+    private fun clearDatabase() {
+        // Avoid weird behavior by going back to the library.
+        val newBackstack = listOf(RouterTransaction.with(LibraryController())) +
+                router.backstack.drop(1)
+
+        router.setBackstack(newBackstack, FadeChangeHandler())
+
+        db.deleteMangasNotInLibrary().executeAsBlocking()
+        db.deleteHistoryNoLastRead().executeAsBlocking()
+        activity?.toast(R.string.clear_database_completed)
+    }
+
+    private companion object {
+        const val CLEAR_CACHE_KEY = "pref_clear_cache_key"
     }
 }
