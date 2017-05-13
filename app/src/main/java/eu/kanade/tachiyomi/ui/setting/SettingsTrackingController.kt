@@ -12,6 +12,7 @@ import eu.kanade.tachiyomi.util.getResourceColor
 import eu.kanade.tachiyomi.widget.preference.LoginPreference
 import eu.kanade.tachiyomi.widget.preference.TrackLoginDialog
 import uy.kohesive.injekt.injectLazy
+import eu.kanade.tachiyomi.data.preference.PreferenceKeys as Keys
 
 class SettingsTrackingController : SettingsController(),
         TrackLoginDialog.Listener {
@@ -22,16 +23,16 @@ class SettingsTrackingController : SettingsController(),
         titleRes = R.string.pref_category_tracking
 
         switchPreference {
-            key = keys.autoUpdateTrack
+            key = Keys.autoUpdateTrack
             titleRes = R.string.pref_auto_update_manga_sync
             defaultValue = true
         }
         switchPreference {
-            key = keys.askUpdateTrack
+            key = Keys.askUpdateTrack
             titleRes = R.string.pref_ask_update_manga_sync
             defaultValue = false
         }.apply {
-            dependency = keys.autoUpdateTrack // the preference needs to be attached.
+            dependency = Keys.autoUpdateTrack // the preference needs to be attached.
         }
         preferenceCategory {
             titleRes = R.string.services
@@ -67,7 +68,7 @@ class SettingsTrackingController : SettingsController(),
             block: (@DSL LoginPreference).() -> Unit
     ): LoginPreference {
         return initThenAdd(LoginPreference(context).apply {
-            key = keys.trackUsername(service.id)
+            key = Keys.trackUsername(service.id)
             title = service.name
         }, block)
     }
@@ -79,7 +80,7 @@ class SettingsTrackingController : SettingsController(),
     }
 
     private fun updatePreference(id: Int) {
-        val pref = findPreference(keys.trackUsername(id)) as? LoginPreference
+        val pref = findPreference(Keys.trackUsername(id)) as? LoginPreference
         pref?.notifyChanged()
     }
 

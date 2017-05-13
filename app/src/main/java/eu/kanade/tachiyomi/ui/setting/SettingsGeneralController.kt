@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.pref_library_columns.view.*
 import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import eu.kanade.tachiyomi.data.preference.PreferenceKeys as Keys
 
 class SettingsGeneralController : SettingsController() {
 
@@ -26,7 +27,7 @@ class SettingsGeneralController : SettingsController() {
         titleRes = R.string.pref_category_general
 
         listPreference {
-            key = keys.lang
+            key = Keys.lang
             titleRes = R.string.pref_language
             entryValues = arrayOf("", "bg", "en", "es", "fr", "it", "pt", "ru", "vi")
             entries = entryValues.map { value ->
@@ -47,7 +48,7 @@ class SettingsGeneralController : SettingsController() {
             }
         }
         intListPreference {
-            key = keys.theme
+            key = Keys.theme
             titleRes = R.string.pref_theme
             entriesRes = arrayOf(R.string.light_theme, R.string.dark_theme)
             entryValues = arrayOf("1", "2")
@@ -84,7 +85,7 @@ class SettingsGeneralController : SettingsController() {
                     }
         }
         intListPreference {
-            key = keys.startScreen
+            key = Keys.startScreen
             titleRes = R.string.pref_start_screen
             entriesRes = arrayOf(R.string.label_library, R.string.label_recent_manga,
                     R.string.label_recent_updates)
@@ -93,7 +94,7 @@ class SettingsGeneralController : SettingsController() {
             summary = "%s"
         }
         intListPreference {
-            key = keys.libraryUpdateInterval
+            key = Keys.libraryUpdateInterval
             titleRes = R.string.pref_library_update_interval
             entriesRes = arrayOf(R.string.update_never, R.string.update_1hour,
                     R.string.update_2hour, R.string.update_3hour, R.string.update_6hour,
@@ -114,7 +115,7 @@ class SettingsGeneralController : SettingsController() {
             }
         }
         multiSelectListPreference {
-            key = keys.libraryUpdateRestriction
+            key = Keys.libraryUpdateRestriction
             titleRes = R.string.pref_library_update_restriction
             entriesRes = arrayOf(R.string.wifi, R.string.charging)
             entryValues = arrayOf("wifi", "ac")
@@ -130,7 +131,7 @@ class SettingsGeneralController : SettingsController() {
             }
         }
         switchPreference {
-            key = keys.updateOnlyNonCompleted
+            key = Keys.updateOnlyNonCompleted
             titleRes = R.string.pref_update_only_non_completed
             defaultValue = false
         }
@@ -138,7 +139,7 @@ class SettingsGeneralController : SettingsController() {
         val dbCategories = db.getCategories().executeAsBlocking()
 
         multiSelectListPreference {
-            key = keys.libraryUpdateCategories
+            key = Keys.libraryUpdateCategories
             titleRes = R.string.pref_library_update_categories
             entries = dbCategories.map { it.name }.toTypedArray()
             entryValues = dbCategories.map { it.id.toString() }.toTypedArray()
@@ -156,7 +157,7 @@ class SettingsGeneralController : SettingsController() {
                     }
         }
         intListPreference {
-            key = keys.defaultCategory
+            key = Keys.defaultCategory
             titleRes = R.string.default_category
 
             val selectedCategory = dbCategories.find { it.id == preferences.defaultCategory() }

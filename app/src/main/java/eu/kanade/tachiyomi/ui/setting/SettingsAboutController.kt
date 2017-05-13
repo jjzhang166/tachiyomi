@@ -21,6 +21,7 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import eu.kanade.tachiyomi.data.preference.PreferenceKeys as Keys
 
 class SettingsAboutController : SettingsController() {
 
@@ -46,7 +47,7 @@ class SettingsAboutController : SettingsController() {
             defaultValue = true
         }
         switchPreference {
-            key = keys.automaticUpdates
+            key = Keys.automaticUpdates
             titleRes = R.string.pref_enable_automatic_updates
             summaryRes = R.string.pref_enable_automatic_updates_summary
             defaultValue = false

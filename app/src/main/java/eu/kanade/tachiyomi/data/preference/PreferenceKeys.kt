@@ -1,107 +1,105 @@
 package eu.kanade.tachiyomi.data.preference
 
 /**
- * This class stores the keys for the preferences in the application. Most of them are defined
- * in the file "keys.xml". By using this class we can define preferences in one place and get them
- * referenced here.
+ * This class stores the keys for the preferences in the application.
  */
-class PreferenceKeys {
+object PreferenceKeys {
 
-    val theme = "pref_theme_key"
+    const val theme = "pref_theme_key"
 
-    val rotation = "pref_rotation_type_key"
+    const val rotation = "pref_rotation_type_key"
 
-    val enableTransitions = "pref_enable_transitions_key"
+    const val enableTransitions = "pref_enable_transitions_key"
 
-    val showPageNumber = "pref_show_page_number_key"
+    const val showPageNumber = "pref_show_page_number_key"
 
-    val fullscreen = "fullscreen"
+    const val fullscreen = "fullscreen"
 
-    val keepScreenOn = "pref_keep_screen_on_key"
+    const val keepScreenOn = "pref_keep_screen_on_key"
 
-    val customBrightness = "pref_custom_brightness_key"
+    const val customBrightness = "pref_custom_brightness_key"
 
-    val customBrightnessValue = "custom_brightness_value"
+    const val customBrightnessValue = "custom_brightness_value"
 
-    val colorFilter = "pref_color_filter_key"
+    const val colorFilter = "pref_color_filter_key"
 
-    val colorFilterValue = "color_filter_value"
+    const val colorFilterValue = "color_filter_value"
 
-    val defaultViewer = "pref_default_viewer_key"
+    const val defaultViewer = "pref_default_viewer_key"
 
-    val imageScaleType = "pref_image_scale_type_key"
+    const val imageScaleType = "pref_image_scale_type_key"
 
-    val imageDecoder = "image_decoder"
+    const val imageDecoder = "image_decoder"
 
-    val zoomStart = "pref_zoom_start_key"
+    const val zoomStart = "pref_zoom_start_key"
 
-    val readerTheme = "pref_reader_theme_key"
+    const val readerTheme = "pref_reader_theme_key"
 
-    val cropBorders = "crop_borders"
+    const val cropBorders = "crop_borders"
 
-    val readWithTapping = "reader_tap"
+    const val readWithTapping = "reader_tap"
 
-    val readWithVolumeKeys = "reader_volume_keys"
+    const val readWithVolumeKeys = "reader_volume_keys"
 
-    val portraitColumns = "pref_library_columns_portrait_key"
+    const val portraitColumns = "pref_library_columns_portrait_key"
 
-    val landscapeColumns = "pref_library_columns_landscape_key"
+    const val landscapeColumns = "pref_library_columns_landscape_key"
 
-    val updateOnlyNonCompleted = "pref_update_only_non_completed_key"
+    const val updateOnlyNonCompleted = "pref_update_only_non_completed_key"
 
-    val autoUpdateTrack = "pref_auto_update_manga_sync_key"
+    const val autoUpdateTrack = "pref_auto_update_manga_sync_key"
 
-    val askUpdateTrack = "pref_ask_update_manga_sync_key"
+    const val askUpdateTrack = "pref_ask_update_manga_sync_key"
 
-    val lastUsedCatalogueSource = "last_catalogue_source"
+    const val lastUsedCatalogueSource = "last_catalogue_source"
 
-    val lastUsedCategory = "last_used_category"
+    const val lastUsedCategory = "last_used_category"
 
-    val catalogueAsList = "pref_display_catalogue_as_list"
+    const val catalogueAsList = "pref_display_catalogue_as_list"
 
-    val enabledLanguages = "source_languages"
+    const val enabledLanguages = "source_languages"
 
-    val backupDirectory = "backup_directory"
+    const val backupDirectory = "backup_directory"
 
-    val downloadsDirectory = "download_directory"
+    const val downloadsDirectory = "download_directory"
 
-    val downloadThreads = "pref_download_slots_key"
+    const val downloadThreads = "pref_download_slots_key"
 
-    val downloadOnlyOverWifi = "pref_download_only_over_wifi_key"
+    const val downloadOnlyOverWifi = "pref_download_only_over_wifi_key"
 
-    val numberOfBackups = "backup_slots"
+    const val numberOfBackups = "backup_slots"
 
-    val backupInterval = "backup_interval"
+    const val backupInterval = "backup_interval"
 
-    val removeAfterReadSlots = "remove_after_read_slots"
+    const val removeAfterReadSlots = "remove_after_read_slots"
 
-    val removeAfterMarkedAsRead = "pref_remove_after_marked_as_read_key"
+    const val removeAfterMarkedAsRead = "pref_remove_after_marked_as_read_key"
 
-    val libraryUpdateInterval = "pref_library_update_interval_key"
+    const val libraryUpdateInterval = "pref_library_update_interval_key"
 
-    val libraryUpdateRestriction = "library_update_restriction"
+    const val libraryUpdateRestriction = "library_update_restriction"
 
-    val libraryUpdateCategories = "library_update_categories"
+    const val libraryUpdateCategories = "library_update_categories"
 
-    val filterDownloaded = "pref_filter_downloaded_key"
+    const val filterDownloaded = "pref_filter_downloaded_key"
 
-    val filterUnread = "pref_filter_unread_key"
+    const val filterUnread = "pref_filter_unread_key"
 
-    val librarySortingMode = "library_sorting_mode"
+    const val librarySortingMode = "library_sorting_mode"
 
-    val automaticUpdates = "automatic_updates"
+    const val automaticUpdates = "automatic_updates"
 
-    val startScreen = "start_screen"
+    const val startScreen = "start_screen"
 
-    val downloadNew = "download_new"
+    const val downloadNew = "download_new"
 
-    val downloadNewCategories = "download_new_categories"
+    const val downloadNewCategories = "download_new_categories"
 
-    val libraryAsList = "pref_display_library_as_list"
+    const val libraryAsList = "pref_display_library_as_list"
 
-    val lang = "app_language"
+    const val lang = "app_language"
 
-    val defaultCategory = "default_category"
+    const val defaultCategory = "default_category"
 
     fun sourceUsername(sourceId: Long) = "pref_source_username_$sourceId"
 

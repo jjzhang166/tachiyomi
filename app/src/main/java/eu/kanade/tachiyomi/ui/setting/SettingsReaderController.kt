@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.ui.setting
 
 import android.support.v7.preference.PreferenceScreen
 import eu.kanade.tachiyomi.R
+import eu.kanade.tachiyomi.data.preference.PreferenceKeys as Keys
 
 class SettingsReaderController : SettingsController() {
 
@@ -9,7 +10,7 @@ class SettingsReaderController : SettingsController() {
         titleRes = R.string.pref_category_reader
 
         intListPreference {
-            key = keys.defaultViewer
+            key = Keys.defaultViewer
             titleRes = R.string.pref_viewer_type
             entriesRes = arrayOf(R.string.left_to_right_viewer, R.string.right_to_left_viewer,
                     R.string.vertical_viewer, R.string.webtoon_viewer)
@@ -18,7 +19,7 @@ class SettingsReaderController : SettingsController() {
             summary = "%s"
         }
         intListPreference {
-            key = keys.imageScaleType
+            key = Keys.imageScaleType
             titleRes = R.string.pref_image_scale_type
             entriesRes = arrayOf(R.string.scale_type_fit_screen, R.string.scale_type_stretch,
                     R.string.scale_type_fit_width, R.string.scale_type_fit_height,
@@ -28,7 +29,7 @@ class SettingsReaderController : SettingsController() {
             summary = "%s"
         }
         intListPreference {
-            key = keys.zoomStart
+            key = Keys.zoomStart
             titleRes = R.string.pref_zoom_start
             entriesRes = arrayOf(R.string.zoom_start_automatic, R.string.zoom_start_left,
                     R.string.zoom_start_right, R.string.zoom_start_center)
@@ -37,7 +38,7 @@ class SettingsReaderController : SettingsController() {
             summary = "%s"
         }
         intListPreference {
-            key = keys.rotation
+            key = Keys.rotation
             titleRes = R.string.pref_rotation_type
             entriesRes = arrayOf(R.string.rotation_free, R.string.rotation_lock,
                     R.string.rotation_force_portrait, R.string.rotation_force_landscape)
@@ -46,7 +47,7 @@ class SettingsReaderController : SettingsController() {
             summary = "%s"
         }
         intListPreference {
-            key = keys.readerTheme
+            key = Keys.readerTheme
             titleRes = R.string.pref_reader_theme
             entriesRes = arrayOf(R.string.white_background, R.string.black_background)
             entryValues = arrayOf("0", "1")
@@ -54,7 +55,7 @@ class SettingsReaderController : SettingsController() {
             summary = "%s"
         }
         intListPreference {
-            key = keys.imageDecoder
+            key = Keys.imageDecoder
             titleRes = R.string.pref_image_decoder
             entries = arrayOf("Image", "Rapid", "Skia")
             entryValues = arrayOf("0", "1", "2")
@@ -62,27 +63,27 @@ class SettingsReaderController : SettingsController() {
             summary = "%s"
         }
         switchPreference {
-            key = keys.fullscreen
+            key = Keys.fullscreen
             titleRes = R.string.pref_fullscreen
             defaultValue = true
         }
         switchPreference {
-            key = keys.enableTransitions
+            key = Keys.enableTransitions
             titleRes = R.string.pref_page_transitions
             defaultValue = true
         }
         switchPreference {
-            key = keys.showPageNumber
+            key = Keys.showPageNumber
             titleRes = R.string.pref_show_page_number
             defaultValue = true
         }
         switchPreference {
-            key = keys.cropBorders
+            key = Keys.cropBorders
             titleRes = R.string.pref_crop_borders
             defaultValue = false
         }
         switchPreference {
-            key = keys.keepScreenOn
+            key = Keys.keepScreenOn
             titleRes = R.string.pref_keep_screen_on
             defaultValue = true
         }
@@ -90,12 +91,12 @@ class SettingsReaderController : SettingsController() {
             titleRes = R.string.pref_reader_navigation
 
             switchPreference {
-                key = keys.readWithTapping
+                key = Keys.readWithTapping
                 titleRes = R.string.pref_read_with_tapping
                 defaultValue = true
             }
             switchPreference {
-                key = keys.readWithVolumeKeys
+                key = Keys.readWithVolumeKeys
                 titleRes = R.string.pref_read_with_volume_keys
                 defaultValue = false
             }

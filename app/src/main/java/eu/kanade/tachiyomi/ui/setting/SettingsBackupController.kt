@@ -35,6 +35,7 @@ import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import java.io.File
 import java.util.concurrent.TimeUnit
+import eu.kanade.tachiyomi.data.preference.PreferenceKeys as Keys
 
 class SettingsBackupController : SettingsController() {
 
@@ -91,7 +92,7 @@ class SettingsBackupController : SettingsController() {
             titleRes = R.string.pref_backup_service_category
 
             intListPreference {
-                key = keys.backupInterval
+                key = Keys.backupInterval
                 titleRes = R.string.pref_backup_interval
                 entriesRes = arrayOf(R.string.update_never, R.string.update_6hour,
                         R.string.update_12hour, R.string.update_24hour,
@@ -112,7 +113,7 @@ class SettingsBackupController : SettingsController() {
                 }
             }
             val backupDir = preference {
-                key = keys.backupDirectory
+                key = Keys.backupDirectory
                 titleRes = R.string.pref_backup_directory
 
                 onClick {
@@ -139,7 +140,7 @@ class SettingsBackupController : SettingsController() {
                         }
             }
             val backupNumber = intListPreference {
-                key = keys.numberOfBackups
+                key = Keys.numberOfBackups
                 titleRes = R.string.pref_backup_slots
                 entries = arrayOf("1", "2", "3", "4", "5")
                 entryValues = entries

@@ -17,6 +17,7 @@ import eu.kanade.tachiyomi.util.DiskUtil
 import eu.kanade.tachiyomi.widget.CustomLayoutPickerActivity
 import uy.kohesive.injekt.injectLazy
 import java.io.File
+import eu.kanade.tachiyomi.data.preference.PreferenceKeys as Keys
 
 class SettingsDownloadController : SettingsController() {
 
@@ -26,7 +27,7 @@ class SettingsDownloadController : SettingsController() {
         titleRes = R.string.pref_category_downloads
 
         preference {
-            key = keys.downloadsDirectory
+            key = Keys.downloadsDirectory
             titleRes = R.string.pref_download_directory
             onClick {
                 showDownloadDirectoriesDialog()
@@ -48,12 +49,12 @@ class SettingsDownloadController : SettingsController() {
                     }
         }
         switchPreference {
-            key = keys.downloadOnlyOverWifi
+            key = Keys.downloadOnlyOverWifi
             titleRes = R.string.pref_download_only_over_wifi
             defaultValue = true
         }
         intListPreference {
-            key = keys.downloadThreads
+            key = Keys.downloadThreads
             titleRes = R.string.pref_download_slots
             entries = arrayOf("1", "2", "3")
             entryValues = arrayOf("1", "2", "3")
@@ -64,12 +65,12 @@ class SettingsDownloadController : SettingsController() {
             titleRes = R.string.pref_remove_after_read
 
             switchPreference {
-                key = keys.removeAfterMarkedAsRead
+                key = Keys.removeAfterMarkedAsRead
                 titleRes = R.string.pref_remove_after_marked_as_read
                 defaultValue = false
             }
             intListPreference {
-                key = keys.removeAfterReadSlots
+                key = Keys.removeAfterReadSlots
                 titleRes = R.string.pref_remove_after_read
                 entriesRes = arrayOf(R.string.disabled, R.string.last_read_chapter,
                         R.string.second_to_last, R.string.third_to_last, R.string.fourth_to_last,
@@ -86,12 +87,12 @@ class SettingsDownloadController : SettingsController() {
             titleRes = R.string.pref_download_new
 
             switchPreference {
-                key = keys.downloadNew
+                key = Keys.downloadNew
                 titleRes = R.string.pref_download_new
                 defaultValue = false
             }
             multiSelectListPreference {
-                key = keys.downloadNewCategories
+                key = Keys.downloadNewCategories
                 titleRes = R.string.pref_download_new_categories
                 entries = dbCategories.map { it.name }.toTypedArray()
                 entryValues = dbCategories.map { it.id.toString() }.toTypedArray()

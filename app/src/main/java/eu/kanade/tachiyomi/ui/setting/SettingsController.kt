@@ -22,8 +22,6 @@ abstract class SettingsController : PreferenceController() {
 
     val preferences: PreferencesHelper = Injekt.get()
 
-    val keys = preferences.keys
-
     var untilDestroySubscriptions = CompositeSubscription()
         private set
 
