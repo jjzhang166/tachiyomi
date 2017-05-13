@@ -17,7 +17,7 @@ fun Preference<Boolean>.invert(): Boolean = getOrDefault().let { set(!it); !it }
 
 class PreferencesHelper(val context: Context) {
 
-    val keys = PreferenceKeys(context)
+    val keys = PreferenceKeys()
 
     private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val rxPrefs = RxSharedPreferences.create(prefs)
