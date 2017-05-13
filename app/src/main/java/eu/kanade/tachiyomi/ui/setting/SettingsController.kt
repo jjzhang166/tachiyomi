@@ -1,61 +1,72 @@
 package eu.kanade.tachiyomi.ui.setting
 
+import android.content.Context
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.preference.PreferenceController
 import android.support.v7.preference.PreferenceScreen
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import eu.kanade.tachiyomi.R
+import eu.kanade.tachiyomi.data.preference.PreferencesHelper
+import rx.Observable
+import rx.Subscription
+import rx.subscriptions.CompositeSubscription
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.get
 
-class SettingsController : BaseSettingsController() {
-    override fun setupPreferenceScreen(screen: PreferenceScreen) = with(screen) {
-        titleRes = R.string.label_settings
+abstract class SettingsController : PreferenceController() {
 
-        preference {
-            iconRes = R.drawable.ic_tune_black_24dp
-            iconTintAttr = R.attr.colorAccent
-            titleRes = R.string.pref_category_general
-            onClick { navigateTo(SettingsGeneralController()) }
+    val preferences: PreferencesHelper = Injekt.get()
+
+    val keys = preferences.keys
+
+    var untilDestroySubscriptions = CompositeSubscription()
+        private set
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View {
+        if (untilDestroySubscriptions.isUnsubscribed) {
+            untilDestroySubscriptions = CompositeSubscription()
         }
-        preference {
-            iconRes = R.drawable.ic_chrome_reader_mode_black_24dp
-            iconTintAttr = R.attr.colorAccent
-            titleRes = R.string.pref_category_reader
-            onClick { navigateTo(SettingsReaderController()) }
-        }
-        preference {
-            iconRes = R.drawable.ic_file_download_black_24dp
-            iconTintAttr = R.attr.colorAccent
-            titleRes = R.string.pref_category_downloads
-            onClick { navigateTo(SettingsDownloadController()) }
-        }
-        preference {
-            iconRes = R.drawable.ic_language_black_24dp
-            iconTintAttr = R.attr.colorAccent
-            titleRes = R.string.pref_category_sources
-            onClick { navigateTo(SettingsSourcesController()) }
-        }
-        preference {
-            iconRes = R.drawable.ic_sync_black_24dp
-            iconTintAttr = R.attr.colorAccent
-            titleRes = R.string.pref_category_tracking
-            onClick { navigateTo(SettingsTrackingController()) }
-        }
-        preference {
-            iconRes = R.drawable.ic_code_black_24dp
-            iconTintAttr = R.attr.colorAccent
-            titleRes = R.string.pref_category_advanced
-            onClick { navigateTo(SettingsAdvancedController()) }
-        }
-        preference {
-            iconRes = R.drawable.ic_help_black_24dp
-            iconTintAttr = R.attr.colorAccent
-            titleRes = R.string.pref_category_about
-            onClick { navigateTo(SettingsAboutController()) }
-        }
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    private fun navigateTo(controller: BaseSettingsController) {
-        router.pushController(RouterTransaction.with(controller)
-                .pushChangeHandler(FadeChangeHandler())
-                .popChangeHandler(FadeChangeHandler()))
+    override fun onDestroyView(view: View) {
+        super.onDestroyView(view)
+        untilDestroySubscriptions.unsubscribe()
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        val screen = preferenceManager.createPreferenceScreen(getThemedContext())
+        preferenceScreen = screen
+        setupPreferenceScreen(screen)
+    }
+
+    abstract fun setupPreferenceScreen(screen: PreferenceScreen): Any?
+
+    private fun getThemedContext(): Context {
+        val tv = TypedValue()
+        activity!!.theme.resolveAttribute(R.attr.preferenceTheme, tv, true)
+        return ContextThemeWrapper(activity, tv.resourceId)
+    }
+
+    open fun getTitle(): String? {
+        return preferenceScreen?.title?.toString()
+    }
+
+    override fun onAttach(view: View) {
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getTitle()
+        super.onAttach(view)
+    }
+
+    fun <T> Observable<T>.subscribeUntilDestroy(): Subscription {
+        return subscribe().also { untilDestroySubscriptions.add(it) }
+    }
+
+    fun <T> Observable<T>.subscribeUntilDestroy(onNext: (T) -> Unit): Subscription {
+        return subscribe(onNext).also { untilDestroySubscriptions.add(it) }
     }
 }

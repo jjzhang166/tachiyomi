@@ -13,7 +13,7 @@ import eu.kanade.tachiyomi.widget.preference.LoginPreference
 import eu.kanade.tachiyomi.widget.preference.TrackLoginDialog
 import uy.kohesive.injekt.injectLazy
 
-class SettingsTrackingController : BaseSettingsController(),
+class SettingsTrackingController : SettingsController(),
         TrackLoginDialog.Listener {
 
     private val trackManager: TrackManager by injectLazy()

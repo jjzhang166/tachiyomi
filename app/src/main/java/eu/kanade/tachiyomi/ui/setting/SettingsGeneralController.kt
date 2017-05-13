@@ -6,8 +6,6 @@ import android.os.Handler
 import android.support.v7.preference.PreferenceScreen
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
-import com.bluelinelabs.conductor.ControllerChangeHandler
-import com.bluelinelabs.conductor.ControllerChangeType
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.database.DatabaseHelper
 import eu.kanade.tachiyomi.data.library.LibraryUpdateJob
@@ -20,7 +18,7 @@ import rx.Observable
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
-class SettingsGeneralController : BaseSettingsController() {
+class SettingsGeneralController : SettingsController() {
 
     private val db: DatabaseHelper = Injekt.get()
 

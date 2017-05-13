@@ -18,7 +18,7 @@ import eu.kanade.tachiyomi.widget.CustomLayoutPickerActivity
 import uy.kohesive.injekt.injectLazy
 import java.io.File
 
-class SettingsDownloadController : BaseSettingsController() {
+class SettingsDownloadController : SettingsController() {
 
     private val db: DatabaseHelper by injectLazy()
 

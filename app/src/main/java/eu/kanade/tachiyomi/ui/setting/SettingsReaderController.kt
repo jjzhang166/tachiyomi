@@ -3,7 +3,7 @@ package eu.kanade.tachiyomi.ui.setting
 import android.support.v7.preference.PreferenceScreen
 import eu.kanade.tachiyomi.R
 
-class SettingsReaderController : BaseSettingsController() {
+class SettingsReaderController : SettingsController() {
 
     override fun setupPreferenceScreen(screen: PreferenceScreen) = with(screen) {
         titleRes = R.string.pref_category_reader

@@ -22,7 +22,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SettingsAboutController : BaseSettingsController() {
+class SettingsAboutController : SettingsController() {
 
     /**
      * Checks for new releases

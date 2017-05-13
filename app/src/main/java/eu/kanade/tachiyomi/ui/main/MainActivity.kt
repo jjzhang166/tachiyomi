@@ -24,7 +24,7 @@ import eu.kanade.tachiyomi.ui.library.LibraryController
 import eu.kanade.tachiyomi.ui.manga.MangaController
 import eu.kanade.tachiyomi.ui.recent_updates.RecentChaptersController
 import eu.kanade.tachiyomi.ui.recently_read.RecentlyReadController
-import eu.kanade.tachiyomi.ui.setting.SettingsController
+import eu.kanade.tachiyomi.ui.setting.SettingsMainController
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import uy.kohesive.injekt.injectLazy
@@ -85,7 +85,7 @@ class MainActivity : BaseActivity() {
                         startActivity(Intent(this, DownloadActivity::class.java))
                     }
                     R.id.nav_drawer_settings ->
-                        router.pushController(RouterTransaction.with(SettingsController())
+                        router.pushController(RouterTransaction.with(SettingsMainController())
                                 .pushChangeHandler(FadeChangeHandler())
                                 .popChangeHandler(FadeChangeHandler()))
                 }

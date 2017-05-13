@@ -15,7 +15,7 @@ import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import java.util.*
 
-class SettingsSourcesController : BaseSettingsController(),
+class SettingsSourcesController : SettingsController(),
         SourceLoginDialog.Listener {
 
     private val onlineSources by lazy { Injekt.get<SourceManager>().getOnlineSources() }

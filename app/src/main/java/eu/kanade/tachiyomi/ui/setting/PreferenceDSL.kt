@@ -3,7 +3,6 @@ package eu.kanade.tachiyomi.ui.setting
 import android.content.Context
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.preference.*
-import eu.kanade.tachiyomi.util.getResourceColor
 import eu.kanade.tachiyomi.widget.preference.IntListPreference
 
 @DslMarker
@@ -94,14 +93,10 @@ var Preference.iconTint: Int
     get() = 0 // set only
     set(value) { DrawableCompat.setTint(icon, value) }
 
-var Preference.iconTintAttr: Int
-    get() = 0 // set only
-    set(value) { DrawableCompat.setTint(icon, context.getResourceColor(value)) }
-
 var ListPreference.entriesRes: Array<Int>
-    get() = emptyArray()
+    get() = emptyArray() // set only
     set(value) { entries = value.map { context.getString(it) }.toTypedArray() }
 
 var MultiSelectListPreference.entriesRes: Array<Int>
-    get() = emptyArray()
+    get() = emptyArray() // set only
     set(value) { entries = value.map { context.getString(it) }.toTypedArray() }
